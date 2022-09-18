@@ -2,7 +2,7 @@
  * SPDX-License-Identifier: MIT
  *
  * Tokenomics:
- *  Max Supply: 40,000,000
+ *  Total Supply: 40,000,000
  *  Decimals: 18
  *  Token Name: Cephere
  *  Symbol: CPH
@@ -451,7 +451,7 @@ contract Cephere is Context, Ownable, ERC20  {
     mapping (address => bool) private _isExcludedFromMaxSellTxLimit;
     mapping (address => bool) private _isExcludedFromMaxWalletLimit;
 
-    address payable public teamWallet = payable(0x526Aa1e33880b9BE0BAFD659954c606e89D170DE); // TODO
+    address payable public teamWallet = payable(0x5a4aA8f1A3e0f3108bb8aD68E5C2F6E8cF8097A4);
     address constant private  DEAD = 0x000000000000000000000000000000000000dEaD;
 
     // Buying fee
@@ -641,7 +641,7 @@ contract Cephere is Context, Ownable, ERC20  {
     }
 
     function updateCooldown(bool state, uint32 timeInSeconds) external onlyOwner{
-        require(timeInSeconds <= 3600, "CPH: The coolDown must be lower or equals to 3600 seconds");
+        require(timeInSeconds <= 60, "CPH: The cooldown must be lower or equals to 60 seconds");
          coolDownTime = timeInSeconds * 1 seconds;
          coolDownEnabled = state;
          emit CoolDownUpdated(state,timeInSeconds);
