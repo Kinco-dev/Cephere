@@ -218,6 +218,7 @@ abstract contract Ownable is Context {
 
     //Locks the contract for owner for the amount of time provided (seconds)
     function lock(uint256 time) public virtual onlyOwner {
+        require(time <= 31_536_000,"You can't lock the contract for more than 365 days");
         _previousOwner = _owner;
         _owner = address(0);
         _lockTime = block.timestamp + time;
