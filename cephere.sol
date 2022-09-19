@@ -19,11 +19,6 @@
     function _msgSender() internal view virtual returns (address) {
         return (msg.sender);
     }
-
-    function _msgData() internal view virtual returns (bytes memory) {
-        this; 
-        return msg.data;
-    }
 }
 
 interface IERC20 {
@@ -516,6 +511,8 @@ contract Cephere is Context, Ownable, ERC20  {
 
     event SwapAndDistribute(uint256 tokensSwapped,uint256 bnbReceived);
 
+    event AccumulatedTokensUpdated(uint256 amount);
+
     constructor() ERC20("Cephere", "CPH") { 
         // Create supply
         _mint(msg.sender, 40_000_000 * 10**18);
@@ -621,6 +618,7 @@ contract Cephere is Context, Ownable, ERC20  {
     function setAccumulatedTokensLimit(uint256 amount) external onlyOwner {
         require(amount >= 1 && amount <= 10_000_000, "CPH: Amount must be bewteen 1 and 10 000 000");
         _accumulatedTokensLimit = amount *10**18;
+        emit AccumulatedTokensUpdated(amount);
 
     }
 
@@ -774,7 +772,7 @@ contract Cephere is Context, Ownable, ERC20  {
     function withdrawStuckBEP20Tokens(address token, address to) external onlyOwner {
         require(token != address(this), "CPH: You are not allowed to get CPH tokens from the contract");
         require(IERC20(token).balanceOf(address(this)) > 0, "CPH: There are no tokens in the contract");
-        IERC20(token).transfer(to, IERC20(token).balanceOf(address(this)));
+        require(IERC20(token).transfer(to, IERC20(token).balanceOf(address(this))));
     }
 
     function getCirculatingSupply() external view returns (uint256) {
